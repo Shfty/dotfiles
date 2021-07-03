@@ -90,9 +90,6 @@ set wildcharm=<Tab>
 "" Remaps
 """ Core
 
-" More ergonomic command key mapping (consistent with Lear Siegler ADM 3A)
-nnoremap - :
-
 " Map esc to leave terminal insert mode
 tnoremap <Esc> <C-\><C-n>
 

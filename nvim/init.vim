@@ -59,7 +59,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
-" Show relative line number for easier j,k jumps
+" Enable hybrid line numbers
+set number
 set relativenumber
 
 " Enable RGB color 

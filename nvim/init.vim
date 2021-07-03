@@ -75,9 +75,6 @@ set hidden
 " Cache undo history across vim sessions
 set undofile
 
-" Allow skipping over underscores for W, B, etc
-set iskeyword-=_
-
 " 300ms of no cursor movement to trigger CursorHold
 set updatetime=300
 

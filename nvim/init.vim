@@ -311,3 +311,10 @@ dap.configurations.cpp = {
 
 dap.configurations.rust = dap.configurations.cpp
 EOF
+
+"" Other
+""" Prevent Ctrl+Z under windows
+let is_windows = has('win32') || has('win64')
+if is_windows
+    nmap <C-z> <Nop>
+endif

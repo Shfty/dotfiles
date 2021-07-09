@@ -230,6 +230,7 @@ let g:compe.source = {
 \ 'buffer': v:true,
 \ 'nvim_lsp': v:true,
 \ }
+let g:compe.documentation = v:true
 
 """ rust_analyzer
 lua <<EOF

@@ -64,7 +64,7 @@ set number
 set relativenumber
 
 " Enable RGB color 
-set termguicolors
+" set termguicolors
 
 " Don't highlight search results
 set nohlsearch

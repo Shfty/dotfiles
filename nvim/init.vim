@@ -63,8 +63,8 @@ set expandtab
 set number
 set relativenumber
 
-" Enable RGB color 
-" set termguicolors
+" Disable RGB color (Mac-specific)
+set notermguicolors
 
 " Don't highlight search results
 set nohlsearch

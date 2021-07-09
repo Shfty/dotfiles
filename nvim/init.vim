@@ -240,6 +240,9 @@ require'lspconfig'.rust_analyzer.setup({
 })
 EOF
 
+""" gdscript
+"lua require'lspconfig'.gdscript.setup{}
+
 """ LSP
 
 lua <<EOF

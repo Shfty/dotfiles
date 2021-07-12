@@ -247,6 +247,7 @@ let g:compe.source = {
 \ 'buffer': v:true,
 \ 'nvim_lsp': v:true,
 \ }
+let g:compe.documentation = v:true
 
 """ rust_analyzer
 lua <<EOF
@@ -256,6 +257,9 @@ require'lspconfig'.rust_analyzer.setup({
     }
 })
 EOF
+
+""" gdscript
+"lua require'lspconfig'.gdscript.setup{}
 
 """ LSP
 
@@ -328,3 +332,10 @@ dap.configurations.cpp = {
 
 dap.configurations.rust = dap.configurations.cpp
 EOF
+
+"" Other
+""" Prevent Ctrl+Z under windows
+let is_windows = has('win32') || has('win64')
+if is_windows
+    nmap <C-z> <Nop>
+endif

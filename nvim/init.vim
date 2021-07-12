@@ -7,11 +7,12 @@ endfunction
 autocmd FileType vim call VimFolding()
 
 """ Transparent background override
-augroup transparent_bg
-    autocmd!
-    autocmd ColorScheme * highlight Normal guibg=none
-                      \ | highlight NonText guibg=none
-augroup END
+function TransparentBackground()
+    highlight Normal guibg=none
+    highlight NonText guibg=none
+endfunction
+
+autocmd ColorScheme * call TransparentBackground()
 
 """ LSP events
 augroup lsp_events

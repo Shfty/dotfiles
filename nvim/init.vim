@@ -28,6 +28,22 @@ augroup lsp_events
         \   }
 augroup END
 
+""" Checklist highlights
+
+function SetChecklistHighlight()
+    highlight Tick ctermfg=lightgreen guifg=lightgreen
+    highlight Cross ctermfg=red guifg=red
+    highlight Arrow ctermfg=yellow guifg=yellow
+    highlight Unchecked ctermfg=lightgray guifg=lightgray
+    
+    call matchadd("Arrow", "\\[>\\]")
+    call matchadd("Tick", "\\[✓\\]")
+    call matchadd("Cross", "\\[✗\\]")
+    call matchadd("Unchecked", "\\[ \\]")
+endfunction
+
+autocmd BufWinEnter * call SetChecklistHighlight()
+
 "" Settings
 
 " Backspace over the column where insert mode starts, and over auto-indents

@@ -140,8 +140,9 @@ nnoremap <F4> :Explore<CR>
 
 " Cargo functions
 nnoremap <F5> :wa<CR>:Cargo build<CR>
-nnoremap <F6> :wa<CR>:Cargo run<CR>
-nnoremap <F7> :wa<CR>:Cargo install --path .<CR>
+nnoremap <F6> :wa<CR>:Cargo test -- --test-threads=1 --nocapture<CR>
+nnoremap <F7> :wa<CR>:Cargo run<CR>
+nnoremap <F8> :wa<CR>:Cargo install --path .<CR>
 
 " LSP
 nnoremap <Leader>[  <cmd>lua vim.lsp.buf.hover()<CR>

@@ -29,6 +29,12 @@ augroup lsp_events
         \   }
 augroup END
 
+""" Automatically display crate versions in Cargo.toml
+augroup CargoTomlCrates
+    autocmd!
+    autocmd BufRead Cargo.toml call crates#toggle()
+augroup END
+
 "" Settings
 
 " Backspace over the column where insert mode starts, and over auto-indents

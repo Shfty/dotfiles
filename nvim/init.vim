@@ -1,17 +1,18 @@
 "" Autocommands
 """ Auto-fold vim files using repeated double-quotes to define nesting depth
-augroup vim_folding
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=expr foldlevel=0
-    autocmd FileType vim setlocal foldexpr=getline(v:lnum)=~'^\"\"'?'>'.(matchend(getline(v:lnum),'\"\"*')-1):'='
-augroup END
+function VimFolding()
+    setlocal foldmethod=expr foldlevel=0
+    setlocal foldexpr=getline(v:lnum)=~'^\"\"'?'>'.(matchend(getline(v:lnum),'\"\"*')-1):'='
+endfunction
+autocmd FileType vim call VimFolding()
 
 """ Transparent background override
-augroup transparent_bg
-    autocmd!
-    autocmd ColorScheme * highlight Normal guibg=none
-                      \ | highlight NonText guibg=none
-augroup END
+function TransparentBackground()
+    highlight Normal guibg=none
+    highlight NonText guibg=none
+endfunction
+
+autocmd ColorScheme * call TransparentBackground()
 
 """ LSP events
 augroup lsp_events
@@ -34,6 +35,21 @@ augroup CargoTomlCrates
     autocmd!
     autocmd BufRead Cargo.toml call crates#toggle()
 augroup END
+
+""" Checklist highlights
+function SetChecklistHighlight()
+    highlight Tick ctermfg=lightgreen guifg=lightgreen
+    highlight Cross ctermfg=red guifg=red
+    highlight Arrow ctermfg=yellow guifg=yellow
+    highlight Unchecked ctermfg=lightgray guifg=lightgray
+    
+    call matchadd("Arrow", "\\[>\\]")
+    call matchadd("Tick", "\\[✓\\]")
+    call matchadd("Cross", "\\[✗\\]")
+    call matchadd("Unchecked", "\\[ \\]")
+endfunction
+
+autocmd BufWinEnter * call SetChecklistHighlight()
 
 "" Settings
 

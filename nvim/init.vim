@@ -1,22 +1,25 @@
 "" Autocommands
 """ Auto-fold vim files using repeated double-quotes to define nesting depth
-augroup vim_folding
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=expr foldlevel=0
-    autocmd FileType vim setlocal foldexpr=getline(v:lnum)=~'^\"\"'?'>'.(matchend(getline(v:lnum),'\"\"*')-1):'='
-augroup END
+function VimFolding()
+    setlocal foldmethod=expr foldlevel=0
+    setlocal foldexpr=getline(v:lnum)=~'^\"\"'?'>'.(matchend(getline(v:lnum),'\"\"*')-1):'='
+endfunction
+autocmd FileType vim call VimFolding()
 
 """ Transparent background override
-augroup transparent_bg
-    autocmd!
-    autocmd ColorScheme * highlight Normal guibg=none
-                      \ | highlight NonText guibg=none
-augroup END
+function TransparentBackground()
+    highlight Normal guibg=none
+    highlight NonText guibg=none
+endfunction
+
+autocmd ColorScheme * call TransparentBackground()
 
 """ LSP events
 augroup lsp_events
+    autocmd!
+
     " Show diagnostic popup on cursor hold
-    autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })
+    autocmd CursorMoved * lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })
 
     " Enable type inlay hints
     autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
@@ -27,6 +30,27 @@ augroup lsp_events
         \   }
 augroup END
 
+""" Automatically display crate versions in Cargo.toml
+augroup CargoTomlCrates
+    autocmd!
+    autocmd BufRead Cargo.toml call crates#toggle()
+augroup END
+
+""" Checklist highlights
+function SetChecklistHighlight()
+    highlight Tick ctermfg=lightgreen guifg=lightgreen
+    highlight Cross ctermfg=red guifg=red
+    highlight Arrow ctermfg=yellow guifg=yellow
+    highlight Unchecked ctermfg=lightgray guifg=lightgray
+    
+    call matchadd("Arrow", "\\[>\\]")
+    call matchadd("Tick", "\\[✓\\]")
+    call matchadd("Cross", "\\[✗\\]")
+    call matchadd("Unchecked", "\\[ \\]")
+endfunction
+
+autocmd BufWinEnter * call SetChecklistHighlight()
+
 "" Settings
 
 " Backspace over the column where insert mode starts, and over auto-indents
@@ -34,6 +58,9 @@ set backspace=start,indent
 
 " Copy current indent when creating a new line
 set autoindent
+
+" Don't wrap text
+set nowrap
 
 " Don't create a backup file
 set nobackup
@@ -126,12 +153,13 @@ nnoremap <Leader>l :lwindow<CR>
 nnoremap <F1> <Nop>
 nnoremap <F2> <Nop>
 nnoremap <F3> :TagbarToggle<CR>
-nnoremap <F4> :Lexplore<CR>
+nnoremap <F4> :Explore<CR>
 
 " Cargo functions
 nnoremap <F5> :wa<CR>:Cargo build<CR>
-nnoremap <F6> :wa<CR>:Cargo run<CR>
-nnoremap <F7> :wa<CR>:Cargo install --path .<CR>
+nnoremap <F6> :wa<CR>:Cargo test -- --test-threads=1 --nocapture<CR>
+nnoremap <F7> :wa<CR>:Cargo run<CR>
+nnoremap <F8> :wa<CR>:Cargo install --path .<CR>
 
 " LSP
 nnoremap <Leader>[  <cmd>lua vim.lsp.buf.hover()<CR>
@@ -159,9 +187,7 @@ nnoremap <F12> :lua require'dap'.step_into()<CR>
 let g:netrw_fastbrowse=0
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
+let g:netrw_browse_split = 0
 
 """ tagbar
 let g:tagbar_autofocus = 1

@@ -15,8 +15,10 @@ augroup END
 
 """ LSP events
 augroup lsp_events
+    autocmd!
+
     " Show diagnostic popup on cursor hold
-    autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })
+    autocmd CursorMoved * lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })
 
     " Enable type inlay hints
     autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *

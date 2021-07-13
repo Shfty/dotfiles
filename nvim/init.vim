@@ -300,6 +300,15 @@ dap.configurations.cpp = {
     args = {},
     runInTerminal = false,
   },
+  {
+    name = "Attach",
+    type = "lldb",
+    request = "attach",
+    pid = function()
+      return tonumber(vim.fn.input('PID: '))
+    end,
+    args = {},
+  },
 }
 
 dap.configurations.rust = dap.configurations.cpp

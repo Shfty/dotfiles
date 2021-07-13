@@ -136,7 +136,7 @@ nnoremap <Leader>l :lwindow<CR>
 nnoremap <F1> <Nop>
 nnoremap <F2> <Nop>
 nnoremap <F3> :TagbarToggle<CR>
-nnoremap <F4> :Lexplore<CR>
+nnoremap <F4> :Explore<CR>
 
 " Cargo functions
 nnoremap <F5> :wa<CR>:Cargo build<CR>
@@ -169,9 +169,7 @@ nnoremap <F12> :lua require'dap'.step_into()<CR>
 let g:netrw_fastbrowse=0
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
+let g:netrw_browse_split = 0
 
 """ tagbar
 let g:tagbar_autofocus = 1

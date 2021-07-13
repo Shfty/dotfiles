@@ -43,6 +43,8 @@ set backspace=start,indent
 " Copy current indent when creating a new line
 set autoindent
 
+" Don't wrap text
+set nowrap
 " Don't create a backup file
 set nobackup
 

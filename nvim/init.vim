@@ -165,7 +165,7 @@ nnoremap <F8> :wa<CR>:Cargo install --path .<CR>
 nnoremap <Leader>[  <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <Leader>]  <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <Leader>}  <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <Leader>cw <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <Leader>cw <cmd>lua vim.lsp.buf.rename()<CR><C-w>
 nnoremap <Leader>.  <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <Leader>/  <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <Leader>f  <cmd>lua vim.lsp.buf.formatting()<CR>

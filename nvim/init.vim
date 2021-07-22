@@ -54,7 +54,7 @@ autocmd BufWinEnter * call SetChecklistHighlight()
 "" Settings
 
 " Backspace over the column where insert mode starts, and over auto-indents
-set backspace=start,indent
+set backspace=start,indent,eol
 
 " Copy current indent when creating a new line
 set autoindent
@@ -156,10 +156,10 @@ nnoremap <F3> :TagbarToggle<CR>
 nnoremap <F4> :Explore<CR>
 
 " Cargo functions
-nnoremap <F5> :wa<CR>:Cargo build<CR>
-nnoremap <F6> :wa<CR>:Cargo test -- --test-threads=1 --nocapture<CR>
-nnoremap <F7> :wa<CR>:Cargo run<CR>
-nnoremap <F8> :wa<CR>:Cargo install --path .<CR>
+nnoremap <F5> :wa<CR>:Cargo build<CR>i
+nnoremap <F6> :wa<CR>:Cargo test -- --test-threads=1 --nocapture<CR>i
+nnoremap <F7> :wa<CR>:Cargo run<CR>i
+nnoremap <F8> :wa<CR>:Cargo install --path .<CR>i
 
 " LSP
 nnoremap <Leader>[  <cmd>lua vim.lsp.buf.hover()<CR>
@@ -204,8 +204,8 @@ let g:lightline = {
     \ 'colorscheme': 'dracula',
     \ 'active': {
     \   'left': [
-    \       [ 'mode', 'paste', 'readonly'],
-    \       [ 'buffers' ],
+    \       [ 'mode', 'paste' ],
+    \       [ 'readonly', 'filename' ],
     \   ],
     \   'right': [
     \       [ 'lineinfo' ],
@@ -215,11 +215,12 @@ let g:lightline = {
     \ },
     \ 'inactive': {
     \   'left': [
-    \       [ 'filename' ],
+    \       [ 'readonly', 'filename' ],
     \   ],
     \   'right': [
     \       [ 'lineinfo' ],
-    \       [ 'percent' ]
+    \       [ 'percent' ],
+    \       [ 'gitbranch', 'fileformat', 'fileencoding', 'filetype' ],
     \   ]
     \ },
     \ 'separator': {
@@ -229,12 +230,6 @@ let g:lightline = {
     \ 'subseparator': {
     \   'left': '',
     \   'right': '',
-    \ },
-    \ 'component_expand': {
-    \   'buffers': 'lightline#bufferline#buffers'
-    \ },
-    \ 'component_type': {
-    \   'buffers': 'tabsel'
     \ },
     \ 'component_function': {
     \   'gitbranch': 'FugitiveHead'
@@ -308,7 +303,7 @@ lua <<EOF
 local dap = require('dap')
 dap.adapters.lldb = {
   type = 'executable',
-  command = '/bin/lldb-vscode-11',
+  command = 'C:/SDK/LLVM/bin/lldb-vscode.exe',
   name = "lldb"
 }
 

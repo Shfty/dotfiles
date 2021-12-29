@@ -280,7 +280,7 @@ let g:compe.documentation = v:true
 lua <<EOF
 require'lspconfig'.rust_analyzer.setup({
     cmd_env = {
-        CARGO_TARGET_DIR = "C:/tmp/rust-analyzer-check"
+        CARGO_TARGET_DIR = "/tmp/rust-analyzer-check"
     }
 })
 EOF

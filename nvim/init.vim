@@ -19,7 +19,7 @@ augroup lsp_events
     autocmd!
 
     " Show diagnostic popup on cursor hold
-    autocmd CursorMoved * lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })
+    " autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })
 
     " Enable type inlay hints
     autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
@@ -50,6 +50,9 @@ function SetChecklistHighlight()
 endfunction
 
 autocmd BufWinEnter * call SetChecklistHighlight()
+
+""" Automate Brick Hill profiling hook
+autocmd FileType gdscript command! HookProfiling %s/func \(.*\)(\(.*\))\( -> .*\)\?:\n/func \1(\2)\3:\r\tvar scope = Profiler.scope(self, "\1", [\2])\r\r/g
 
 "" Settings
 
@@ -173,6 +176,26 @@ nnoremap <Leader>f  <cmd>lua vim.lsp.buf.formatting()<CR>
 " Goto previous/next diagnostic warning/error
 nnoremap  <Leader>g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap  <Leader>g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap  <Leader>gg <cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false })<CR>
+
+lua <<EOF
+qflist_diagnostics = function()
+   local diagnostics = vim.lsp.diagnostic.get_all()
+    local qflist = {}
+    for bufnr, diagnostic in pairs(diagnostics) do
+      for _, d in ipairs(diagnostic) do
+        d.bufnr = bufnr
+        d.lnum = d.range.start.line + 1
+        d.col = d.range.start.character + 1
+        d.text = d.message
+        table.insert(qflist, d)
+      end
+    end
+    vim.lsp.util.set_qflist(qflist)
+end
+EOF
+
+nnoremap <Leader>gl :lua qflist_diagnostics()<CR>:botright copen<CR>
 
 " DAP
 nnoremap <Leader>b :lua require'dap'.toggle_breakpoint()<CR>
@@ -189,7 +212,7 @@ let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 0
 
-""" tagbar
+""" tagba
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 
@@ -257,7 +280,7 @@ let g:compe.documentation = v:true
 lua <<EOF
 require'lspconfig'.rust_analyzer.setup({
     cmd_env = {
-        CARGO_TARGET_DIR = "/tmp/rust-analyzer-check"
+        CARGO_TARGET_DIR = "C:/tmp/rust-analyzer-check"
     }
 })
 EOF
@@ -268,27 +291,9 @@ EOF
 """ LSP
 
 lua <<EOF
--- Custom handler to populate quickfix list when diagnostics are published
-diagnostic_handler = function(err, method, result, client_id, bufnr, config)
-   local diagnostics = vim.lsp.diagnostic.get_all()
-    local qflist = {}
-    for bufnr, diagnostic in pairs(diagnostics) do
-      for _, d in ipairs(diagnostic) do
-        d.bufnr = bufnr
-        d.lnum = d.range.start.line + 1
-        d.col = d.range.start.character + 1
-        d.text = d.message
-        table.insert(qflist, d)
-      end
-    end
-    vim.lsp.util.set_qflist(qflist)
-
-    return vim.lsp.diagnostic.on_publish_diagnostics(err, method, result, client_id, bufnr, config)
-end
-
 -- Configure diagnostics with virtual inlay text, column signs, and insert-mode updates
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    diagnostic_handler,
+    vim.lsp.diagnostic.on_publish_diagnostics,
     {
         virtual_text = true,
         signs = true,
@@ -330,7 +335,7 @@ dap.configurations.cpp = {
     --
     -- But you should be aware of the implications:
     -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
-    runInTerminal = false,
+    runInTerminal = true,
   },
   {
     name = "Attach",
@@ -343,6 +348,7 @@ dap.configurations.cpp = {
   },
 }
 
+dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
 EOF
 

@@ -1,0 +1,7 @@
+require("autocommands.background")
+require("autocommands.reload-on-change")
+require("autocommands.checklist-highlight")
+require("autocommands.ft-vim")
+require("autocommands.ft-i3config")
+require("autocommands.ft-rust")
+require("autocommands.cargo-crates")
